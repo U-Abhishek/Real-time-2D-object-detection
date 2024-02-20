@@ -7,5 +7,9 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 
+#include "kmeans.h"
+
 using namespace cv;
 using namespace std;
+
+cv::Vec3b closestColor( cv::Vec3b &pix, std::vector<cv::Vec3b> &colors );

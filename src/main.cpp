@@ -1,26 +1,5 @@
 #include <iostream>
 #include "aaron.h"
-#include "kmeans.h"
-
-/// @brief closest color for kmeans
-/// @param pix 
-/// @param colors 
-/// @return 
-cv::Vec3b closestColor( cv::Vec3b &pix, std::vector<cv::Vec3b> &colors ) {
-  int mincolor = 0;
-  int mindist = SSD( pix, colors[0] );
-
-  for(int i=1;i<colors.size();i++) {
-    int sse = SSD( pix, colors[i] );
-    if( sse < mindist ) {
-      mindist = sse;
-      mincolor = i;
-    }
-  }
-
-  return( colors[mincolor] );
-}
-
 
 /// @brief MAIN LOOP
 /// @param argc 
@@ -61,7 +40,7 @@ for(;;) {
         //apply kmeans
         vector<Vec3b> means;
         std::vector<cv::Vec3b> data;
-        int B = frame.rows/16; // setting it to sample 1/16 of the pixels?
+        int B = 4; // setting it to sample 1/16 of the pixels?
         for(int i=0;i<blured_frame.rows - B;i += B) {
                 for(int j=0;j<blured_frame.cols - B;j += B) {
                 int jx = rand() % B;
