@@ -51,7 +51,8 @@ for(;;) {
                 break;
         }
         ////////// place object recognition code below //////////
-
+        
+        //////////////////////// TASK 1 ////////////////////////
         //apply gaussian blur to the image
         Mat blured_frame;
         GaussianBlur(frame, blured_frame, Size(3,3), 1, 1);
@@ -86,6 +87,7 @@ for(;;) {
                 }
         }
 
+        //closest color
         Mat dst;
         dst.create( blured_frame.size(), blured_frame.type() );
         for(int i=0;i<blured_frame.rows;i++) {
@@ -94,7 +96,11 @@ for(;;) {
                 }
         }
 
+        //output video
         cv::imshow("clustered", dst );
+
+        //////////////////////// TASK 2 ////////////////////////
+
 
 
         /////////////////////////////////////////////////////////
