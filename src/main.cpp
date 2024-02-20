@@ -1,5 +1,5 @@
 #include <iostream>
-#include "aaron.h"
+#include "../include/aaron.h"
 
 /// @brief MAIN LOOP
 /// @param argc 
