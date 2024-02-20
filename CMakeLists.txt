@@ -14,7 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY C:/Users/uabhi/my_cpp/prcv/Real-time-2D-objec
 
 #set(HEADER_FILES)
 
-add_executable(real_time_2d_object_detection main.cpp) # ${HEADER_FILES})
+add_executable(real_time_2d_object_detection src/main.cpp src/kmeans.cpp) # ${HEADER_FILES})
 #add_executable(real_time_2d_object_detection src/reading_dnn.cpp)
 
 target_link_libraries(real_time_2d_object_detection ${OpenCV_LIBS})
