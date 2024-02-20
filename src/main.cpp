@@ -83,7 +83,7 @@ for(;;) {
 
 
         /////////////////////////////////////////////////////////
-        // cv::imshow("Video", frame);
+        // cv::imshow("Video", fragit me);
 
         // see if there is a waiting keystroke
         char key = cv::waitKey(10);
