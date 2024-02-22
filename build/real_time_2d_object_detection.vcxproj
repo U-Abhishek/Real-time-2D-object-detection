@@ -325,7 +325,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\uabhi\my_cpp\prcv\Real-time-2D-object-detection\main.cpp" />
+    <ClCompile Include="C:\Users\uabhi\my_cpp\prcv\Real-time-2D-object-detection\src\a_main.cpp" />
+    <ClCompile Include="C:\Users\uabhi\my_cpp\prcv\Real-time-2D-object-detection\src\abhishek.cpp" />
+    <ClCompile Include="C:\Users\uabhi\my_cpp\prcv\Real-time-2D-object-detection\src\kmeans.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\uabhi\my_cpp\prcv\Real-time-2D-object-detection\build\ZERO_CHECK.vcxproj">
