@@ -1,4 +1,4 @@
-#include "abhishek.h"
+#include <filesystem>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -6,10 +6,41 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <cmath>
+#include "abhishek.h"
+#include "csv_util.h"
 //#include <opencv2/core/eigen.hpp>
 
 using namespace cv;
 using namespace std;
+
+namespace fs = std::filesystem;
+
+/// @brief Takes Folder path as input and return a vector of all file paths
+/// @param directory_path 
+/// @return file_path vector of strings 
+std::vector<std::string> getFilesInDirectory(const std::string& directory_path) {
+    std::vector<std::string> file_paths;
+    // This structure would distinguish a file from a directory
+    struct stat sb;
+    // Loop through the directory
+    for(const auto& entry : fs::directory_iterator(directory_path)) {
+        // Convert the path to a string
+        std::filesystem::path outfilename = entry.path();
+        std::string outfilename_str = outfilename.string();
+        // Convert the string path to a const char*
+        const char* path_c_str = outfilename_str.c_str();
+        // Check if it's a file and not a directory
+        if (stat(path_c_str, &sb) == 0 && !(sb.st_mode & S_IFDIR)) {
+            // Add the path to the vector
+            std::string extension = outfilename.extension().string();
+            if (extension == ".jpg" || extension == ".png") {
+                // Add the path to the vector
+                file_paths.push_back(outfilename_str);
+            }
+        }
+    }
+    return file_paths;
+}
 
 //////////////// Task 3 /////////////////////////////////
 
@@ -53,7 +84,7 @@ void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id){
     }
 
 
-    void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id);
+void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id);
 
     /// @brief Applies region growth algorithm to find segments in the image
     /// @param src binary filtered image
@@ -75,88 +106,69 @@ void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id){
     return region_id - 1;
     }
 
-    //////////////// Task 4 /////////////////////////////////
+//////////////// Task 4 /////////////////////////////////
 
-
-
-
-    /// @brief 
-    /// @param region_map is the region map
-    /// @param region_id The region id of segment the features need to be extracted
-    /// @return 0 on success
-    int feature_extraction(cv::Mat& region_map, int region_id){
+/// @brief This function extracts the % filled and Width/Height of minimum bounding box
+/// @param region_map is the region map
+/// @param region_id The region id of segment the features need to be extracted
+/// @param feature_vector (percent filled, Width/Height)
+/// @return 0 on success
+int feature_extraction(cv::Mat& region_map, int region_id, std::vector<float> &feature_vector){
     // Step 1: Creating binary image from Region Map and Region ID
     Mat bin_image = (region_map == region_id);
-    cv::imshow("Bin Image", bin_image);
-    cv::waitKey(0);
+    // cv::imshow("Bin Image", bin_image);
+    // cv::waitKey(0);
     // Step 2: Extracting Features form the binary image
     cv::Moments m = cv::moments(bin_image, true);
 
-    /////////////////////////////////////////////////// Eigen Vector calculation /////////////////////////////////
+    /*
+    The calculations applied below are taken form rsearch paper "Image Moments-Based Structuring and Tracking of Objects - LOURENA ROCHA, LUIZ VELHO, PAULO CEZAR P. CARVALHO"
+    */
+    double Cx = static_cast<double>(m.m10 / m.m00);
+    double Cy = static_cast<double>(m.m01 / m.m00);
+    double a = static_cast<double>((m.m20 / m.m00) - (Cx * Cx));
+    double b = static_cast<double>(2 * ((m.m11 / m.m00) - (Cx * Cy)));
+    double c = static_cast<double>((m.m02 / m.m00) - (Cy * Cy));
 
-    // Assuming u02, u11, u20, and m00 are defined
-    double u02 = m.mu02;
-    double u11 = m.mu11;
-    double u20 = m.mu20;
-    double m00 = m.m00;
+    double w = static_cast<double>(sqrt(6 * (a + c - sqrt(b*b + (a - c)*(a - c)))));
+    double h = static_cast<double>(sqrt(6 * (a + c + sqrt(b*b + (a - c)*(a - c)))));
+    double x = Cx - 0.5;
+    double y = Cy - (w * 0.5);
 
-    // Calculate the elements of the second order central moment tensor
-    double mu[2][2] = {
-        {u02 / m00, u11 / m00},
-        {u11 / m00, u20 / m00}
-    };
-
-    // Convert the 2x2 matrix to an OpenCV matrix
-    cv::Mat muMat(2, 2, CV_64FC1, mu);
-
-    // Compute eigenvalues and eigenvectors
-    cv::Mat eigenvalues, eigenvectors;
-    cv::eigen(muMat, eigenvalues, eigenvectors);
-
-    // Extract eigenvalues
-    double l1 = eigenvalues.at<double>(0);
-    double l2 = eigenvalues.at<double>(1);
-
-    // Extract eigenvectors
-    double v1x = eigenvectors.at<double>(0, 0);
-    double v1y = eigenvectors.at<double>(1, 0);
-    double v2x = eigenvectors.at<double>(0, 1);
-    double v2y = eigenvectors.at<double>(1, 1);
-
-    // Compute the orientation (phi)
-    double phi = std::atan2(v1y, v1x);
-
-    // Output the results
-    std::cout << "Eigenvalues:" << std::endl;
-    std::cout << "l1: " << l1 << std::endl;
-    std::cout << "l2: " << l2 << std::endl;
-    std::cout << "Orientation (phi): " << phi << std::endl;
-
-    // Calculate w and h
-    double w = std::sqrt(12 * l1);
-    double h = std::sqrt(12 * l2);
-
-    // Output the results
-    std::cout << "Height (H): " << h << std::endl;
-    std::cout << "Width (W): " << w << std::endl;
-    std::cout << "Area of the segment: " << m.m00 << std::endl;
-    std::cout << "Area of the min box: " << w*h << std::endl;
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Output the extracted parameters
+    // std::cout << "Height (H): " << h << std::endl;
+    // std::cout << "Width (W): " << w << std::endl;
+    // std::cout << "Area of the segment: " << m.m00 << std::endl;
+    // std::cout << "Area of the min box: " << w*h << std::endl;
 
     // 2.1) Feature 1:  % filled
-    /*
-    i/p : m_00 or mu_00 = Area of the segment, min bounding box Height, min bounding box width
-    */
-    double percent_filled = m.m00/ (w*h);
+    float percent_filled = static_cast<float>(m.m00/ (w*h));
     std::cout << "percent filled : " << percent_filled << std::endl;
     // 2.2) Feature 2: Bounding box Hight/Width ratio
-    /*
-    i/p : min bounding box Height, min bounding box width
-    */
-    double HW_ratio = h/w;
-    std::cout << "H W ratio: " << HW_ratio << std::endl;
+    float wh_ratio = static_cast<float>(w/h);
+    std::cout << "W / H ratio: " << wh_ratio << std::endl;
 
+    // 3) appending the features into feature vector
+    feature_vector.push_back(percent_filled);
+    feature_vector.push_back(wh_ratio); 
+
+    rectangle(bin_image, Point(static_cast<int>(Cx), static_cast<int>(Cy)), Point(static_cast<int>(Cx) + 10, static_cast<int>(Cy) + 10), Scalar(100,100,100), -1);
+    imshow("Image", bin_image);
+    waitKey(0);
 
     return 0;
-    }
+}
+
+
+//////////////////////////////////////////////////// Task 6 ///////////////////////////////////////////////////////////
+
+void image_labeling(std::string csv_path, std::vector<float> feature_vector){
+    // Step 1: Ask used for 
+    std::string category; 
+    std::cout << "Enter the lable (only lower case letters) : ";
+    std::cin >> category;
+    char* category_ptr = const_cast<char*>(category.c_str());
+    char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
+    // Step 2: Extract features for the image
+    append_image_data_csv(csv_path_ptr, category_ptr, feature_vector, 0);
+}
