@@ -32,58 +32,55 @@ for(;;) {
         ////////// place object recognition code below //////////
         
         //////////////////////// TASK 1 ////////////////////////
+
         //apply gaussian blur to the image
         Mat blured_frame;
         GaussianBlur(frame, blured_frame, Size(3,3), 1, 1);
 
-
-        //apply kmeans
+        //apply ISODATA alg
+        Mat dominant_frame, binary_frame;
         vector<Vec3b> means;
-        std::vector<cv::Vec3b> data;
-        int B = 4; // setting it to sample 1/16 of the pixels?
-        for(int i=0;i<blured_frame.rows - B;i += B) {
-                for(int j=0;j<blured_frame.cols - B;j += B) {
-                int jx = rand() % B;
-                int jy = rand() % B;
-                data.push_back( blured_frame.at<cv::Vec3b>(i+jy, j+jx) );
-                }
-        }
-
-        int *labels = new int[data.size()];
-        int ncolors = 2; // I think this means k = 2? Apparently this means ISODATA algo
-
-        if(kmeans( data, means, labels, ncolors ) ) {
-                printf("Erro using kmeans\n");
-                return(-1);
-        }
-
-
-        //print means just to see values
-        for (Vec3b i:means){
-                for (int j = 0; j < 3; j++){
-
-                        cout << static_cast<float>(i.val[j]) << endl;
-                }
-        }
-
-        //closest color
-        Mat dst;
-        dst.create( blured_frame.size(), blured_frame.type() );
-        for(int i=0;i<blured_frame.rows;i++) {
-                for(int j=0;j<blured_frame.cols;j++) {
-                dst.at<cv::Vec3b>(i,j) = closestColor(blured_frame.at<cv::Vec3b>(i,j), means);
-                }
-        }
-
-        //output video
-        cv::imshow("clustered", dst );
+        isodata(blured_frame, dominant_frame, means);
+        make_binary_img(dominant_frame, binary_frame, means);
 
         //////////////////////// TASK 2 ////////////////////////
+        Mat cleanup;
+        task2(binary_frame, cleanup);
+
+        //////////////////////// TASK 3 ////////////////////////
+
+
+
+
+        //////////////////////// TASK 4 ////////////////////////
+
+
+
+
+        //////////////////////// TASK 5 ////////////////////////
+
+
+
+
+        //////////////////////// TASK 6 //////////////////////// 
+
+
+
+
+        //////////////////////// TASK 7 ////////////////////////
+
+
+
+
+        //////////////////////// TASK 8 ////////////////////////        
+
 
 
 
         /////////////////////////////////////////////////////////
-        // cv::imshow("Video", frame);
+        // imshow("Original Video", frame);
+        imshow("Video", binary_frame);
+        imshow("Task2", cleanup);
 
         // see if there is a waiting keystroke
         char key = cv::waitKey(10);
