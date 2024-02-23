@@ -82,6 +82,7 @@ for(;;) {
         imshow("Video", binary_frame);
         imshow("Task2", cleanup);
 
+
         // see if there is a waiting keystroke
         char key = cv::waitKey(10);
         if( key == 'q') {
