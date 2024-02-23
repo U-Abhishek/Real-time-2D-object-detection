@@ -12,9 +12,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 # Set the output directory for the executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY C:/Users/uabhi/my_cpp/prcv/Real-time-2D-object-detection/bin)
 
-#set(HEADER_FILES)
+#set(HEADER_FILES include/aaron.h include/abhishek.h include/kmeans.h)
 
-add_executable(real_time_2d_object_detection src/main.cpp src/kmeans.cpp) # ${HEADER_FILES})
+add_executable(real_time_2d_object_detection src/a_main.cpp src/abhishek.cpp src/kmeans.cpp utils/csv_util.cpp) # ${HEADER_FILES})
 #add_executable(real_time_2d_object_detection src/reading_dnn.cpp)
 
 target_link_libraries(real_time_2d_object_detection ${OpenCV_LIBS})
