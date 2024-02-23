@@ -1,3 +1,4 @@
 build
 CMakeList.txt
 data
+.vscode
