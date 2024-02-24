@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../include/aaron.h"
+#include "../include/abhishek.h"
+#include "../include/csv_util.h"
 
 /// @brief MAIN LOOP
 /// @param argc 
@@ -48,23 +50,38 @@ for(;;) {
         task2(binary_frame, cleanup);
 
         //////////////////////// TASK 3 ////////////////////////
+        cv::Mat region_map = cv::Mat::zeros(cleanup.rows, cleanup.cols, CV_8UC1);
 
-
+        int num_regions;
+        num_regions = region_growth(cleanup, region_map);
+        std::cout<< "num_regions = " << num_regions << std::endl;
+        cv::Mat colorMap;
+        cv::applyColorMap(region_map, colorMap, cv::COLORMAP_JET); 
 
 
         //////////////////////// TASK 4 ////////////////////////
-
-
+        std::vector<float> feature_vector;
+        int region_id = 1;
+        feature_extraction(region_map, region_id,feature_vector);
 
 
         //////////////////////// TASK 5 ////////////////////////
+        bool data_collection= true;
+        std::string csv_path = "C:/Users/aaron/Documents/Coding/Real-time-2D-object-detection/data/features_dir/features_csv.csv";
+        // For data collection and else if for 
+        if (data_collection){
+                image_labeling(csv_path, feature_vector);
 
-
+        }
 
 
         //////////////////////// TASK 6 //////////////////////// 
-
-
+        if (!data_collection){
+                std::vector<char *> labels;
+                std::vector<std::vector<float>> features;
+                char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
+                read_image_data_csv(csv_path_ptr, labels, features, 0);
+        }
 
 
         //////////////////////// TASK 7 ////////////////////////
@@ -81,6 +98,8 @@ for(;;) {
         // imshow("Original Video", frame);
         imshow("Video", binary_frame);
         imshow("Task2", cleanup);
+        imshow("Task3", colorMap);
+
 
         // see if there is a waiting keystroke
         char key = cv::waitKey(10);
