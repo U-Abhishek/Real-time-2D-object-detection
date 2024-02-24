@@ -42,8 +42,8 @@ for(;;) {
         //apply ISODATA alg
         Mat dominant_frame, binary_frame;
         vector<Vec3b> means;
-        isodata(blured_frame, dominant_frame, means);
-        make_binary_img(dominant_frame, binary_frame, means);
+        // isodata(blured_frame, dominant_frame, means);
+        make_binary_img(blured_frame, binary_frame, means);
 
         //////////////////////// TASK 2 ////////////////////////
         Mat cleanup;
