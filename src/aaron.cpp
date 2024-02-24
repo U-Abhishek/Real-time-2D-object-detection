@@ -94,18 +94,21 @@ int make_binary_img(Mat src, Mat&dst, vector<Vec3b> means){
   int mean_index;
   find_darkest_pix(means, mean_index);
   
-  dst.create(src.size(), src.type());
-  for(int i = 0; i<src.rows; i++){
-    for(int j = 0; j<src.cols; j++){
-      Vec3b current = src.at<Vec3b>(i,j);
-      if(current == means[mean_index]){
-        dst.at<Vec3b>(i,j) = Vec3b(255,255,255);
-      }
-      else{
-        dst.at<Vec3b>(i,j) = Vec3b(0,0,0);
-      }
-    }
-  }
+  //average the means and take the value equistant between them
+  threshold(src, dst, 120, 255, THRESH_BINARY);
+
+  // dst.create(src.size(), src.type());
+  // for(int i = 0; i<src.rows; i++){
+  //   for(int j = 0; j<src.cols; j++){
+  //     Vec3b current = src.at<Vec3b>(i,j);
+  //     if(current == means[mean_index]){
+  //       dst.at<Vec3b>(i,j) = Vec3b(255,255,255);
+  //     }
+  //     else{
+  //       dst.at<Vec3b>(i,j) = Vec3b(0,0,0);
+  //     }
+  //   }
+  // }
 
   return(0);
 }
