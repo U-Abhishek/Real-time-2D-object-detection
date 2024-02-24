@@ -7,6 +7,7 @@ This file is the main file for project 3 that runs the loop for video display
 #include "../include/aaron.h"
 #include "../include/abhishek.h"
 #include "../include/csv_util.h"
+#include <cmath>
 
 /// @brief MAIN LOOP
 /// @param argc 
@@ -27,7 +28,7 @@ cv::Size refS( (int) capdev->get(cv::CAP_PROP_FRAME_WIDTH ),
                 (int) capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
 printf("Expected size: %d %d\n", refS.width, refS.height);
 
-cv::namedWindow("Video", 1); // identifies a window
+//cv::namedWindow("Video", 1); // identifies a window
 cv::Mat frame;
 
 char key_flag = 'o';
@@ -56,7 +57,7 @@ for(;;) {
         cvtColor(blured_frame, gray_frame, COLOR_BGR2GRAY);
 
         Mat binary_frame;
-        threshold(gray_frame, binary_frame, 120, 255, THRESH_BINARY);
+        threshold(gray_frame, binary_frame, 100, 255, THRESH_BINARY_INV);
 
         ////////////////////// TASK 2 ////////////////////////
         Mat cleanup;
@@ -66,19 +67,37 @@ for(;;) {
         //////////////////////// TASK 3 ////////////////////////
         cv::Mat region_map = cv::Mat::zeros(cleanup.rows, cleanup.cols, CV_8UC1);
 
-        int num_regions;
-        num_regions = region_growth(cleanup, region_map);
-        std::cout<< "num_regions = " << num_regions << std::endl;
-        cv::Mat colorMap;
-        cv::applyColorMap(region_map, colorMap, cv::COLORMAP_JET); 
+        int max_region_id;
+        max_region_id = region_growth(cleanup, region_map);
+        //std::cout<< "max_region_id = " << max_region_id << std::endl;
+        //cv::Mat colorMap;
+        //cv::applyColorMap(region_map, colorMap, cv::COLORMAP_JET); 
         //////////////////////// TASK 4 ////////////////////////
 
         std::vector<float> feature_vector;
-        std::vector<float> centeroidXY;
-        int region_id = 1;
-        feature_extraction(region_map, region_id,feature_vector, centeroidXY);
+        std::vector<int> centeroidXY;
+        cv::Mat bin_image_max_reg;
+        int region_id = max_region_id;
+        std::vector<double> min_box;
+        feature_extraction(region_map, region_id, bin_image_max_reg, feature_vector, centeroidXY, min_box);
         // Plotting centroid on image
-        cv::circle(cleanup, cv::Point(centeroidXY[0], centeroidXY[1]), 5, cv::Scalar(0, 0, 255), 3);
+        cv::circle(frame, cv::Point(centeroidXY[0], centeroidXY[1]), 5, cv::Scalar(0, 0, 255), 3);
+        // plottiing rectangle on image
+        
+        float width = static_cast<float>(min_box[0]);
+        float height = static_cast<float>(min_box[1]);
+        float theta = static_cast<float>(min_box[2]);
+        cv::Point center = cv::Point(centeroidXY[0], centeroidXY[1]);
+        float theta_deg = static_cast<float>(theta * (180.0 / 3.141));
+        cv::RotatedRect rotatedRect(center, cv::Size2f(width, height), theta_deg);
+        cv::Point2f vertices[4];
+        rotatedRect.points(vertices);
+        for (int i = 0; i < 4; i++) {
+                cv::line(frame, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 0, 255), 2); 
+        }
+        cv::Point2f arrowEnd(center.x + 0.5 * width * std::cos(theta- 3.14/2),
+                         center.y + 0.5 * width * std::sin(theta- 3.14/2));
+        cv::arrowedLine(frame, center, arrowEnd, cv::Scalar(255, 0, 0), 2, cv::LINE_AA, 0, 0.3);
 
         //////////////////////// TASK 5 ////////////////////////
         char key = cv::waitKey(1);
@@ -89,8 +108,10 @@ for(;;) {
         }
 
         //////////////////////// TASK 6 //////////////////////// 
-
-
+        /*
+        input : char* csv_path_ptr | std::vector<float> feature_vector
+        output : std::string object label
+        */
 
 
         //////////////////////// TASK 7 ////////////////////////
@@ -104,9 +125,13 @@ for(;;) {
 
 
         /////////////////////////////////////////////////////////
+        
         imshow("Original Video", frame);
-        imshow("Video", binary_frame);
-        imshow("Task2", cleanup);
+        imshow("Task 1: Threshold Image ", binary_frame);
+        //imshow("Task 2: Cleaned image", cleanup);
+        //imshow("Task 3: Region Map with different colours", cleanup);
+        //imshow("Task 4: Cleaned image", cleanup);
+        //imshow("Video", bin_image_max_reg);
         
 }
 

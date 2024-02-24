@@ -14,7 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 #set(HEADER_FILES include/aaron.h include/abhishek.h include/kmeans.h)
 
-add_executable(real_time_2d_object_detection src/a_main.cpp src/aaron.cpp src/kmeans.cpp src/abhishek.cpp utils/csv_util.cpp) # ${HEADER_FILES})
+add_executable(real_time_2d_object_detection src/main.cpp src/aaron.cpp src/kmeans.cpp src/abhishek.cpp utils/csv_util.cpp) # ${HEADER_FILES})
 #add_executable(real_time_2d_object_detection src/reading_dnn.cpp)
 
 target_link_libraries(real_time_2d_object_detection ${OpenCV_LIBS})
