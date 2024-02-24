@@ -1,5 +1,5 @@
-build
+build/
 CMakeList.txt
-data
+data/
 .vscode
-bin
+bin/

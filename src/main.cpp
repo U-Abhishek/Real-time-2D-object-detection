@@ -33,7 +33,7 @@ cv::Mat frame;
 char key_flag = 'o';
 
 // Feature vectors for task 6 : labels and features
-std::string csv_path = "C:/Users/aaron/Documents/Coding/Real-time-2D-object-detection/data/features_dir/features_csv.csv";
+std::string csv_path = "../../data/feaures_dir/features_csv.csv";
 std::vector<char *> labels;
 std::vector<std::vector<float>> features;
 char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
@@ -62,7 +62,8 @@ for(;;) {
         Mat cleanup;
         task2(binary_frame, cleanup);
 
-        ////////////////////// TASK 3 ////////////////////////
+  
+        //////////////////////// TASK 3 ////////////////////////
         cv::Mat region_map = cv::Mat::zeros(cleanup.rows, cleanup.cols, CV_8UC1);
 
         int num_regions;
@@ -83,8 +84,7 @@ for(;;) {
         char key = cv::waitKey(1);
         if(key == 'q') {
                 break;
-        }
-        else if(key == 'n'){
+        }else if(key == 'n'){
                 image_labeling(csv_path, feature_vector);
         }
 
@@ -107,9 +107,6 @@ for(;;) {
         imshow("Original Video", frame);
         imshow("Video", binary_frame);
         imshow("Task2", cleanup);
-        // imshow("Task2", cleanup);
-
-
         
 }
 
