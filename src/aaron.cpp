@@ -1,4 +1,7 @@
 #include "../include/aaron.h"
+#include "../include/csv_util.h"
+
+////////////////////////////////////// TASK 1 //////////////////////////////////////
 
 /// @brief closest color for kmeans
 /// @param pix 
@@ -113,6 +116,8 @@ int make_binary_img(Mat src, Mat&dst){
   return(0);
 }
 
+////////////////////////////////////// TASK 2 //////////////////////////////////////
+
 /// @brief Shrinking kernel which is 4 connected (only works on binary images with white as foreground and black as background)
 /// @param src 
 /// @param dst 
@@ -191,5 +196,49 @@ int task2(Mat src, Mat& dst){
   dst.create(shrink2.size(), shrink2.type());
   shrink2.copyTo(dst);
 
+  return(0);
+}
+
+////////////////////////////////////// TASK 6 //////////////////////////////////////
+
+vector<pair<string, float>> baseline_feature_matching(string csv_path, vector<float> target_vector){
+  char* csv_file_path = const_cast<char*>(csv_path.c_str());
+  // creating vector of <char *> of image file names
+  vector<char *> image_filenames;
+  vector<vector<float>> feature_vectors_data;
+  read_image_data_csv(csv_file_path, image_filenames, feature_vectors_data, 0);
+
+  
+  vector<pair<string, float>> dist_vectors_data;
+
+  for(int i = 0; i < feature_vectors_data.size(); i++){
+    float dist = 0;
+    string object = image_filenames[i];
+
+    for(int j = 0; j < feature_vectors_data[i].size(); j++){
+      dist += static_cast<float>((target_vector[j]-feature_vectors_data[i][j])*(target_vector[j]-feature_vectors_data[i][j]));
+    }
+    dist = sqrt(dist);
+    dist_vectors_data.push_back(make_pair(object, dist));
+  }
+
+  return dist_vectors_data;
+}
+
+bool cmp_least(pair<string, float>& a, 
+  pair<string, float>& b) 
+{ 
+  return a.second < b.second; 
+} 
+
+int sort_vec_ascending(vector<pair<string, float>>& dist_vectors_data, int size){
+  sort(dist_vectors_data.begin(), dist_vectors_data.end(), cmp_least);
+  dist_vectors_data.resize(size);
+  return 0;
+}
+
+int task6(string csv_path, vector<float> feature_vector){
+  vector<pair<string, float>> object_dist_vec = baseline_feature_matching(csv_path, feature_vector);
+  sort_vec_ascending(object_dist_vec, 3);
   return(0);
 }
