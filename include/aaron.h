@@ -18,7 +18,7 @@ int isodata(Mat src, Mat& dst, vector<Vec3b>& means);
 
 int find_darkest_pix(vector<Vec3b> means, int& mean_index);
 
-int make_binary_img(Mat src, Mat&dst, vector<Vec3b> means);
+int make_binary_img(Mat src, Mat&dst);
 
 int four_conn_shrink(Mat src, Mat& dst);
 

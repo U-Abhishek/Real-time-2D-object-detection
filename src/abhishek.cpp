@@ -252,11 +252,12 @@ int feature_extraction(cv::Mat& region_map, int region_id, Mat &bin_image_max_re
     int cy = static_cast<int>(Cy);
     centroid.push_back(cx);
     centroid.push_back(cy);
-
+  
     // rectangle(bin_image_max_reg, Point(static_cast<int>(Cx), static_cast<int>(Cy)), Point(static_cast<int>(Cx) + 10, static_cast<int>(Cy) + 10), Scalar(100,100,100), -1);
     // imshow("Image", bin_image_max_reg);
     // waitKey(0);
     // destroyAllWindows();
+  
     return 0;
 }
 
