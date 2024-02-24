@@ -25,3 +25,11 @@ int four_conn_shrink(Mat src, Mat& dst);
 int four_conn_grow(Mat src, Mat& dst);
 
 int task2(Mat src, Mat& dst);
+
+vector<pair<string, float>> baseline_feature_matching(string csv_path, vector<float> feature_vector);
+
+bool cmp_least(pair<string, float>& a, pair<string, float>& b);
+
+int sort_vec_ascending(vector<pair<string, float>>& dist_vectors_data, int size);
+
+int task6(string csv_path, vector<float> feature_vector);
