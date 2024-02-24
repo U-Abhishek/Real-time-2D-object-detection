@@ -113,7 +113,7 @@ void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id);
 /// @param region_id The region id of segment the features need to be extracted
 /// @param feature_vector (percent filled, Width/Height)
 /// @return 0 on success
-int feature_extraction(cv::Mat& region_map, int region_id, std::vector<float> &feature_vector){
+int feature_extraction(cv::Mat& region_map, int region_id, std::vector<float> &feature_vector, std::vector<float> &centroid){
     // Step 1: Creating binary image from Region Map and Region ID
     Mat bin_image = (region_map == region_id);
     // cv::imshow("Bin Image", bin_image);
@@ -143,19 +143,22 @@ int feature_extraction(cv::Mat& region_map, int region_id, std::vector<float> &f
 
     // 2.1) Feature 1:  % filled
     float percent_filled = static_cast<float>(m.m00/ (w*h));
-    std::cout << "percent filled : " << percent_filled << std::endl;
+    //std::cout << "percent filled : " << percent_filled << std::endl;
+    
     // 2.2) Feature 2: Bounding box Hight/Width ratio
     float wh_ratio = static_cast<float>(w/h);
-    std::cout << "W / H ratio: " << wh_ratio << std::endl;
+    //std::cout << "W / H ratio: " << wh_ratio << std::endl;
 
     // 3) appending the features into feature vector
     feature_vector.push_back(percent_filled);
     feature_vector.push_back(wh_ratio); 
+    centroid.push_back(static_cast<int>(Cx));
+    centroid.push_back(static_cast<int>(Cy));
 
-    rectangle(bin_image, Point(static_cast<int>(Cx), static_cast<int>(Cy)), Point(static_cast<int>(Cx) + 10, static_cast<int>(Cy) + 10), Scalar(100,100,100), -1);
-    imshow("Image", bin_image);
-    waitKey(0);
-    destroyAllWindows();
+    // rectangle(bin_image, Point(static_cast<int>(Cx), static_cast<int>(Cy)), Point(static_cast<int>(Cx) + 10, static_cast<int>(Cy) + 10), Scalar(100,100,100), -1);
+    // imshow("Image", bin_image);
+    // waitKey(0);
+    // destroyAllWindows();
     return 0;
 }
 
