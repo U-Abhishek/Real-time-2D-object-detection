@@ -89,12 +89,12 @@ int find_darkest_pix(vector<Vec3b> means, int& mean_index){
 /// @param dst 
 /// @param means 
 /// @return 
-int make_binary_img(Mat src, Mat&dst, vector<Vec3b> means){
+int make_binary_img(Mat src, Mat&dst){
   //darkest color is the foreground and need to set it to white
-  int mean_index;
-  find_darkest_pix(means, mean_index);
+  // int mean_index;
+  // find_darkest_pix(means, mean_index);
   
-  //average the means and take the value equistant between them
+  //threshold the image by value
   threshold(src, dst, 120, 255, THRESH_BINARY);
 
   // dst.create(src.size(), src.type());
@@ -124,20 +124,20 @@ int four_conn_shrink(Mat src, Mat& dst){
   src.copyTo(dst);
 
   //foreground
-  Vec3b foreground(255,255,255);
+  uchar foreground = 255;
 
   //if any foreground neighbors a background pixel (4 connected), it is set to background
   for(int i = 1; i < src.rows - 1; i++){
     for(int j = 1;j < src.cols - 1; j++){
-      Vec3b current = src.at<Vec3b>(i,j);    
+      uchar current = src.at<uchar>(i,j);    
 
       if (current == foreground){
-        Vec3b upper = src.at<Vec3b>(i-1,j);
-        Vec3b lower = src.at<Vec3b>(i+1,j);
-        Vec3b right = src.at<Vec3b>(i,j+1);
-        Vec3b left = src.at<Vec3b>(i,j-1);
+        uchar upper = src.at<uchar>(i-1,j);
+        uchar lower = src.at<uchar>(i+1,j);
+        uchar right = src.at<uchar>(i,j+1);
+        uchar left = src.at<uchar>(i,j-1);
         if (current != upper || current != lower || current != right || current != left){
-          dst.at<Vec3b>(i,j) = Vec3b(0,0,0);
+          dst.at<uchar>(i,j) = 0;
         }
       }
     }
@@ -156,20 +156,20 @@ int four_conn_grow(Mat src, Mat& dst){
   src.copyTo(dst);
 
   //background
-  Vec3b background(0,0,0);
+  uchar background = 0;
 
   //if any background pixel neighbors a foreground pixel (4 connected), it is set to foreground
   for(int i = 1; i < src.rows - 1; i++){
     for(int j = 1;j < src.cols - 1; j++){
-      Vec3b current = src.at<Vec3b>(i,j);    
+      uchar current = src.at<uchar>(i,j);    
 
       if (current == background){
-        Vec3b upper = src.at<Vec3b>(i-1,j);
-        Vec3b lower = src.at<Vec3b>(i+1,j);
-        Vec3b right = src.at<Vec3b>(i,j+1);
-        Vec3b left = src.at<Vec3b>(i,j-1);
+        uchar upper = src.at<uchar>(i-1,j);
+        uchar lower = src.at<uchar>(i+1,j);
+        uchar right = src.at<uchar>(i,j+1);
+        uchar left = src.at<uchar>(i,j-1);
         if (current != upper || current != lower || current != right || current != left){
-          dst.at<Vec3b>(i,j) = Vec3b(255,255,255);
+          dst.at<uchar>(i,j) = 255;
         }
       }
     }
