@@ -209,7 +209,7 @@ int region_growth(cv::Mat& src, cv::Mat& dst){
 /// @param region_id The region id of segment the features need to be extracted
 /// @param feature_vector (percent filled, Width/Height)
 /// @return 0 on success
-int feature_extraction(cv::Mat& region_map, int region_id, Mat &bin_image_max_reg, std::vector<float> &feature_vector, std::vector<int> &centroid){
+int feature_extraction(cv::Mat& region_map, int region_id, Mat &bin_image_max_reg, std::vector<float> &feature_vector, std::vector<int> &centroid, std::vector<double> &min_box){
     // Step 1: Creating binary image from Region Map and Region ID
     bin_image_max_reg = (region_map == region_id);
     // cv::imshow("Bin Image", bin_image_max_reg);
@@ -225,9 +225,9 @@ int feature_extraction(cv::Mat& region_map, int region_id, Mat &bin_image_max_re
     double a = static_cast<double>((m.m20 / m.m00) - (Cx * Cx));
     double b = static_cast<double>(2 * ((m.m11 / m.m00) - (Cx * Cy)));
     double c = static_cast<double>((m.m02 / m.m00) - (Cy * Cy));
-
     double w = static_cast<double>(sqrt(6 * (a + c - sqrt(b*b + (a - c)*(a - c)))));
     double h = static_cast<double>(sqrt(6 * (a + c + sqrt(b*b + (a - c)*(a - c)))));
+    double theta = 0.5 * std::atan2(b,a - c) - 3.14/2;
     double x = Cx - 0.5;
     double y = Cy - (w * 0.5);
 
@@ -252,11 +252,16 @@ int feature_extraction(cv::Mat& region_map, int region_id, Mat &bin_image_max_re
     int cy = static_cast<int>(Cy);
     centroid.push_back(cx);
     centroid.push_back(cy);
+    std::vector<double> elements_to_add = {w, h, theta};
+    min_box.insert(min_box.end(), elements_to_add.begin(), elements_to_add.end());
   
     // rectangle(bin_image_max_reg, Point(static_cast<int>(Cx), static_cast<int>(Cy)), Point(static_cast<int>(Cx) + 10, static_cast<int>(Cy) + 10), Scalar(100,100,100), -1);
     // imshow("Image", bin_image_max_reg);
     // waitKey(0);
     // destroyAllWindows();
+
+
+    //////////
   
     return 0;
 }
