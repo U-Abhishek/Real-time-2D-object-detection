@@ -12,7 +12,7 @@
 int main(int argc, char *argv[]) {
 
         //////////////////////////////////////////// Task 3/////////////////////////////////////////
-        cv::Mat filtered_binary_image = imread("C:/Users/uabhi/my_cpp/prcv/Real-time-2D-object-detection/data/binary_image5.png", cv::IMREAD_GRAYSCALE);
+        cv::Mat filtered_binary_image = imread("C:/Users/uabhi/my_cpp/prcv/Real-time-2D-object-detection/data/bin_img_examples/binary_image5.png", cv::IMREAD_GRAYSCALE);
         cv::Mat region_map = cv::Mat::zeros(filtered_binary_image.rows, filtered_binary_image.cols, CV_8UC1);
 
         int num_regions;
