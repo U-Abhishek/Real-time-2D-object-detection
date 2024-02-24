@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
         // std::cout << "Channels: " << channels << std::endl;
 
         // // Display the color-mapped segmentation map
-        // cv::imshow("colorMap", colorMap);
-        // cv::waitKey(0);
+        cv::imshow("colorMap", colorMap);
+        cv::waitKey(0);
 
 
         ///////////////////////////////////////// Task 4  ////////////////////////////////////////////////////////

@@ -8,6 +8,6 @@
 
 int region_growth(cv::Mat& src, cv::Mat& dst);
 
-int feature_extraction(cv::Mat& region_map, int region_id, std::vector<float> &feature_vector);
+int feature_extraction(cv::Mat& region_map, int region_id, std::vector<float> &feature_vector, std::vector<float> &centroid);
 
 void image_labeling(std::string csv_path, std::vector<float> feature_vector);
