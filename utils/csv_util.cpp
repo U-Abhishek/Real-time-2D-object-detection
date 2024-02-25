@@ -196,7 +196,7 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
     filenames.push_back( fname );
   }
   fclose(fp);
-  printf("Finished reading CSV file\n");
+  // printf("Finished reading CSV file\n");
 
   if(echo_file) {
     for(int i=0;i<data.size();i++) {

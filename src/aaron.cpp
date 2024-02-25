@@ -276,13 +276,13 @@ int task6(Mat& frame, string csv_path, vector<float> feature_vector){
   sort_vec_ascending(object_dist_vec, 1);
 
   //put text on frame
-  if(object_dist_vec[0].second < 0.035){
+  if(object_dist_vec[0].second < 0.05){
     putText(frame, object_dist_vec[0].first, Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
   }
   else{
     putText(frame, "unknown object", Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(0,0,150), 2);
   }
-  // cout << "l2 distance is: " << object_dist_vec[0].second << endl;
+  cout << "l2 distance is: " << object_dist_vec[0].second << ", press 'k' to switch to KNN Classification" << endl;
 
   return(0);
 }
@@ -296,6 +296,11 @@ int task6(Mat& frame, string csv_path, vector<float> feature_vector){
 float add_k_distances(vector<pair<string, float>> distances, int k){
   //initialize distance
   float distance = 0.0;
+
+  if(distances.size()<k){
+    distance = distances[0].second *k ;
+    return distance;
+  }
 
   //adds up top k distances of the input vector
   for(int i=0; i<k; i++){
@@ -344,13 +349,13 @@ int knn_classification(Mat& frame, string csv_path, vector<float> target_vector,
   sort_vec_ascending(k_distances,1);
 
   //put text on the original frame
-  if(k_distances[0].second < 0.2){
+  if(k_distances[0].second < 0.25){
     putText(frame, k_distances[0].first, Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
   }
   else{
     putText(frame, "unknown object", Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(0,0,150), 2);
   }
-  // cout << "knn distance is: " << k_distances[0].second << endl;
+  cout << "knn distance is: " << k_distances[0].second << ", press 'l' to swtich to L2 distance" << endl;
 
   return(0);
 }
