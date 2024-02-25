@@ -237,8 +237,85 @@ int sort_vec_ascending(vector<pair<string, float>>& dist_vectors_data, int size)
   return 0;
 }
 
-int task6(string csv_path, vector<float> feature_vector){
+int task6(Mat& frame, string csv_path, vector<float> feature_vector){
   vector<pair<string, float>> object_dist_vec = baseline_feature_matching(csv_path, feature_vector);
-  sort_vec_ascending(object_dist_vec, 3);
+  sort_vec_ascending(object_dist_vec, 1);
+
+  //for label on image
+  string object = object_dist_vec[0].first;
+  Point textPosition(10,10);
+  int fontFace = FONT_HERSHEY_SIMPLEX;
+  double fontScale = 1.0;
+  Scalar color(255, 255, 255);
+  int thickness = 2;
+
+  //put text on frame
+  putText(frame, object, textPosition, fontFace, fontScale, color, thickness);
+  return(0);
+}
+
+////////////////////////////////////// TASK 9 //////////////////////////////////////
+
+/// @brief Adds up the top k distances for each input vector pair
+/// @param distances 
+/// @param k 
+/// @return 
+float add_k_distances(vector<pair<string, float>> distances, int k){
+  float distance = 0.0;
+  for(int i=0; i<k; i++){
+    distance += distances[i].second;
+  }  
+  return distance;
+}
+
+int knn_classification(Mat& frame, string csv_path, vector<float> target_vector, int k){
+  //calculate euclidean distances to each vector
+  vector<pair<string, float>> object_dist_vec = baseline_feature_matching(csv_path, target_vector);
+  vector<pair<string, float>> card_dist, spork_dist, remote_dist, ring_dist, flashdrive_dist, phone_dist, case_dist, clip_dist;
+  
+  //make a distance vector pair for each object
+  for(int i = 0; i<object_dist_vec.size(); i++){
+    if(object_dist_vec[i].first == "card"){
+      card_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "spork"){
+      spork_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "remote"){
+      remote_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "ring"){
+      ring_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "flashdrive"){
+      flashdrive_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "phone"){
+      phone_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "case"){
+      case_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+    if(object_dist_vec[i].first == "clip"){
+      clip_dist.push_back(make_pair(object_dist_vec[i].first,object_dist_vec[i].second));
+    }
+  }
+
+  //calculate distances for top k for each object and place into a final vector
+  vector<pair<string, float>> k_distances;
+  k_distances.push_back(make_pair(card_dist[0].first, add_k_distances(card_dist,k)));
+  k_distances.push_back(make_pair(spork_dist[0].first, add_k_distances(spork_dist,k)));
+  k_distances.push_back(make_pair(remote_dist[0].first, add_k_distances(remote_dist,k)));
+  k_distances.push_back(make_pair(ring_dist[0].first, add_k_distances(ring_dist,k)));
+  k_distances.push_back(make_pair(flashdrive_dist[0].first, add_k_distances(flashdrive_dist,k)));
+  k_distances.push_back(make_pair(phone_dist[0].first, add_k_distances(phone_dist,k)));
+  k_distances.push_back(make_pair(case_dist[0].first, add_k_distances(case_dist,k)));
+  k_distances.push_back(make_pair(clip_dist[0].first, add_k_distances(clip_dist,k)));
+
+  //sort the top "n" distance for the vector pair by least to most
+  sort_vec_ascending(k_distances,1);
+
+  //put text on frame of object with least distance
+  putText(frame, k_distances[0].first, Point(10,10), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
   return(0);
 }
