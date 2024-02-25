@@ -32,4 +32,4 @@ bool cmp_least(pair<string, float>& a, pair<string, float>& b);
 
 int sort_vec_ascending(vector<pair<string, float>>& dist_vectors_data, int size);
 
-int task6(string csv_path, vector<float> feature_vector);
+int task6(Mat& frame, string csv_path, vector<float> feature_vector);
