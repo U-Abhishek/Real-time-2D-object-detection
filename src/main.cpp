@@ -35,7 +35,7 @@ char key_flag = 'o';
 char key_flag_distance = 'l';
 
 // Feature vectors for task 6 : labels and features
-std::string csv_path = "../../data/features_dir/features_csv.csv";
+std::string csv_path = "data/features_dir/features_csv.csv";
 std::vector<char *> labels;
 std::vector<std::vector<float>> features;
 char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
