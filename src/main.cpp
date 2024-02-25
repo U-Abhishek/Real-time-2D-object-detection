@@ -32,9 +32,10 @@ printf("Expected size: %d %d\n", refS.width, refS.height);
 cv::Mat frame;
 
 char key_flag = 'o';
+char key_flag_distance = 'l';
 
 // Feature vectors for task 6 : labels and features
-std::string csv_path = "../../data/feaures_dir/features_csv.csv";
+std::string csv_path = "../../data/features_dir/features_csv.csv";
 std::vector<char *> labels;
 std::vector<std::vector<float>> features;
 char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
@@ -107,28 +108,35 @@ for(;;) {
                 image_labeling(csv_path, feature_vector);
         }
 
-        //////////////////////// TASK 6 //////////////////////// 
-        /*
-        input : char* csv_path_ptr | std::vector<float> feature_vector
-        output : std::string object label
-        */
+        //////////////////////// TASK 6 ////////////////////////
+        if(key == 'l' || key_flag_distance == 'l'){
+                key_flag_distance = 'l';
+                task6(frame, csv_path, feature_vector);
+        }
+        
 
 
         //////////////////////// TASK 7 ////////////////////////
-
+        //confusion matrix manually made
 
 
 
         //////////////////////// TASK 8 ////////////////////////        
+        //Video demo of code
 
 
+        //////////////////////// TASK 9 ////////////////////////
+        if(key == 'k' || key_flag_distance == 'k'){
+                key_flag_distance = 'k';
+                knn_classification(frame, csv_path, feature_vector, 3);
+        }
 
 
         /////////////////////////////////////////////////////////
         
         imshow("Original Video", frame);
         imshow("Task 1: Threshold Image ", binary_frame);
-        //imshow("Task 2: Cleaned image", cleanup);
+        imshow("Task 2: Cleaned image", cleanup);
         //imshow("Task 3: Region Map with different colours", cleanup);
         //imshow("Task 4: Cleaned image", cleanup);
         //imshow("Video", bin_image_max_reg);
