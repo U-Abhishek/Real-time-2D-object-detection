@@ -1,3 +1,11 @@
+/*
+Abhishek Uddaraju
+18/02/2024
+This file containes the functions used for:
+Task 3: Segment the image into regions
+Task 4: Compute features for each major region
+Task 6: Classify new images
+*/
 #include <filesystem>
 #include <cstdio>
 #include <cstdlib>
@@ -53,41 +61,6 @@ const cv::Point connected_points[4] =
 };
 
 
-/// @brief This fuction is subpart of region growth algorithm
-/// @param src 
-/// @param dst 
-/// @param seed_point The point which should be start of region growth
-/// @param region_id The unique ientifies of regions 
-void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id, int region_area){
-    // Step 1: Creating stack
-    stack<cv::Point> point_stack;
-    point_stack.push(seed_point);
-    // Step 2: loop till the stack is empty 
-    //int region_area = 1;
-    while (!point_stack.empty())
-    {
-        cv::Point center = point_stack.top();
-        dst.at<uchar>(center) = region_id;
-        point_stack.pop();
-        // Find the nighbors of the center pointH
-        for (int i=0; i<4; ++i) {
-            cv::Point neighboring_point = center + connected_points[i];
-            if (neighboring_point.x < 0 || neighboring_point.x > src.cols-1 || neighboring_point.y < 0 || neighboring_point.y > src.rows-1) {
-                continue;
-            }
-            else{
-                if (src.at<uchar>(neighboring_point) == 255 && dst.at<uchar>(neighboring_point) == 0){
-                    point_stack.push(neighboring_point);
-                }
-            }
-        }
-        //region_area++;
-    }
-    }
-
-
-void growth(cv::Mat& src, cv::Mat& dst, cv::Point seed_point, int region_id);
-
 /// @brief Applies region growth algorithm to find segments in the image
 /// @param src binary filtered image
 /// @param dst image to store the sementation map (region IDs are stored as pixel value starting form 1 to n regions)
@@ -129,7 +102,7 @@ int region_growth(cv::Mat& src, cv::Mat& dst){
                     }
                     region_area++;
                 }
-                if (region_area >= max_area)
+                if (region_area >= max_area && region_area>= 200)
                 {
                     max_area = region_area;
                     max_region_id = region_id;
@@ -140,67 +113,6 @@ int region_growth(cv::Mat& src, cv::Mat& dst){
     }
     return max_region_id;
 }
-
-////////////////////////////////////// Task 3.2 connected component analysis ///////////////////////////////////////
-
-// void displayRegions(cv::Mat& image, cv::Mat& labels, int num_regions_to_display) {
-//     // Generate random colors for coloring regions
-//     std::vector<cv::Vec3b> colors;
-//     for (int i = 0; i < num_regions_to_display; ++i) {
-//         colors.push_back(cv::Vec3b(rand() % 256, rand() % 256, rand() % 256));
-//     }
-
-//     // Loop over each region, ignoring the background label (0)
-//     for (int label = 1; label < num_regions_to_display + 1; ++label) {
-//         // Extract region mask
-//         cv::Mat region_mask = (labels == label);
-
-//         // Find contours of the region
-//         std::vector<std::vector<cv::Point>> contours;
-//         cv::findContours(region_mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
-//         // Draw contours of the region on the original image
-//         cv::drawContours(image, contours, -1, cv::Scalar(colors[label - 1]), 2);
-//     }
-
-//     // Display the image with regions highlighted
-//     cv::imshow("Regions", image);
-//     cv::waitKey(0);
-// }
-
-// /// @brief 
-// /// @param region_map 
-// /// @param labels 
-// /// @param stats 
-// /// @param centroids 
-// /// @return region label with max area
-// int connected_component_analysis(cv::Mat region_map, cv::Mat &labels, cv::Mat &stats, cv::Mat &centroids){
-//     int num_labels = cv::connectedComponentsWithStats(region_map, labels, stats, centroids);   
-//     // Find the region with the largest area
-//     int max_area = -1;
-//     int max_area_label = -1;
-//     for (int label = 1; label < num_labels; ++label) {
-//         int area = stats.at<int>(label, cv::CC_STAT_AREA);
-//         if (area > max_area) {
-//             max_area = area;
-//             max_area_label = label;
-//         }
-//     }
-//     // if (max_area_label != -1) {
-//     //     cv::Rect bounding_box(stats.at<int>(max_area_label, cv::CC_STAT_LEFT),
-//     //                           stats.at<int>(max_area_label, cv::CC_STAT_TOP),
-//     //                           stats.at<int>(max_area_label, cv::CC_STAT_WIDTH),
-//     //                           stats.at<int>(max_area_label, cv::CC_STAT_HEIGHT));
-//     //     cv::Point centroid(centroids.at<double>(max_area_label, 0),
-//     //                        centroids.at<double>(max_area_label, 1));
-//     //     std::cout << "Bounding box: " << bounding_box << std::endl;
-//     //     std::cout << "Centroid: " << centroid << std::endl;
-//     // }
-//     return 0;
-// }
-
-
-
 
 //////////////// Task 4 /////////////////////////////////
 
@@ -269,6 +181,9 @@ int feature_extraction(cv::Mat& region_map, int region_id, Mat &bin_image_max_re
 
 //////////////////////////////////////////////////// Task 6 ///////////////////////////////////////////////////////////
 
+/// @brief Takes input form user add uses that as label and appends the new data point created to the database
+/// @param csv_path Database CSV file path
+/// @param feature_vector feature vector of the current video frame
 void image_labeling(std::string csv_path, std::vector<float> feature_vector){
     // Step 1: Ask used for 
     std::string category; 
