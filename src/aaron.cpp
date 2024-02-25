@@ -297,6 +297,11 @@ float add_k_distances(vector<pair<string, float>> distances, int k){
   //initialize distance
   float distance = 0.0;
 
+  if(distances.size()<k){
+    distance = distances[0].second *k ;
+    return distance;
+  }
+
   //adds up top k distances of the input vector
   for(int i=0; i<k; i++){
     distance += distances[i].second;
@@ -344,7 +349,7 @@ int knn_classification(Mat& frame, string csv_path, vector<float> target_vector,
   sort_vec_ascending(k_distances,1);
 
   //put text on the original frame
-  if(k_distances[0].second < 0.2){
+  if(k_distances[0].second < 0.25){
     putText(frame, k_distances[0].first, Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
   }
   else{

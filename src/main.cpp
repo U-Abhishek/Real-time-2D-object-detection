@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
         cv::VideoCapture *capdev;
 
         // open the video device
-        capdev = new cv::VideoCapture(0);
+        capdev = new cv::VideoCapture(1);
         if( !capdev->isOpened() ) {
                 printf("Unable to open video device\n");
                 return(-1);
@@ -41,10 +41,10 @@ int main(int argc, char *argv[]) {
                 // accessing command line arguments
                 csv_path = argv[1];  
         }
-        std::vector<char *> labels;
-        std::vector<std::vector<float>> features;
-        char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
-        read_image_data_csv(csv_path_ptr, labels, features, 0);
+        // std::vector<char *> labels;
+        // std::vector<std::vector<float>> features;
+        // char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
+        // read_image_data_csv(csv_path_ptr, labels, features, 0);
 
         for(;;) {
                 *capdev >> frame; 
@@ -126,8 +126,8 @@ int main(int argc, char *argv[]) {
                 }
 
                 /////////////////////////////////////////////////////////
-                // imshow("Task 1: Threshold Image ", binary_frame);
-                // imshow("Task 2: Cleaned image", cleanup);
+                imshow("Task 1: Threshold Image ", binary_frame);
+                imshow("Task 2: Cleaned image", cleanup);
 
                 // Task 3 required images: Converting the region map to rgb colour map for display 
                 cv::Mat normalizedMap;
@@ -136,14 +136,14 @@ int main(int argc, char *argv[]) {
                 cv::applyColorMap(normalizedMap, color_map, cv::COLORMAP_COOL);
                 imshow("Task 3: Region Map with different colours", color_map);
 
-                // // Task 4 required images: adding features computed on the task4_img frame
-                // std::string per_fill_str = "Percent Fill : " + std::to_string(feature_vector[0]);
-                // std::string w_h_ratio_str = "W/H ration : " + std::to_string(feature_vector[1]);
-                // putText(task4_img, per_fill_str, Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
-                // putText(task4_img, w_h_ratio_str, Point(10, 60), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
-                // imshow("Task 4: Least central moment & Oriented Box & Features", task4_img);
+                // Task 4 required images: adding features computed on the task4_img frame
+                std::string per_fill_str = "Percent Fill : " + std::to_string(feature_vector[0]);
+                std::string w_h_ratio_str = "W/H ration : " + std::to_string(feature_vector[1]);
+                putText(task4_img, per_fill_str, Point(10,30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
+                putText(task4_img, w_h_ratio_str, Point(10, 60), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(255,255,255), 2);
+                imshow("Task 4: Least central moment & Oriented Box & Features", task4_img);
 
-                imshow("Original Video", frame);
+                imshow("Final Video", frame);
                 //imshow("Video", bin_image_max_reg);
                 
         }
