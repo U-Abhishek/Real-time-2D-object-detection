@@ -6,7 +6,7 @@
 - Abhishek Uddaraju
 #### Operating System Used: _Windows_
 #### IDE: _VScode_
-#### Time Travel days: 1.
+#### Time Travel days: 1
 
 ## Tasks and Function Location
 
@@ -20,12 +20,33 @@
 | Task 6| aaron.cpp | 
 | Task 9 KNN| aaron.cpp | 
 
-
 ## Table of Contents
 
-1. [Intoduction](#introduction)
-2. [Installation](#installation)
-3. [Usage](#usage)
+1. [File Structure](#file_structure)
+2. [Intoduction](#introduction)
+3. [Installation](#installation)
+4. [Usage](#usage)
+
+## File_Structure
+* bin/
+  * Debug/
+* include/
+  * aaron.h
+  * abhishek.h
+  * csv_util.h
+  * kmeans.h
+* src/
+  * aaron.cpp
+  * abhishek.cpp
+  * dnnexample.cpp
+  * kmeans.cpp
+  * main.cpp
+  * object_detection.cpp
+* utils/
+  * csv_util.cpp
+* .gitignore
+* CMakeLists.txt
+* README.md
 
 
 ## Introduction
@@ -85,25 +106,3 @@ This will start the program you will be able to see all the results and intermed
 ### 3) For switching to L2 distance based NN classification
 - Press "l" after clicking on the window where the frames are displayed
 
-# Real-time-2D-object-detection
-
-
-* [bin/](.\Real-time-2D-object-detection\bin)
-  * [Debug/](.\Real-time-2D-object-detection\bin\Debug)
-* [include/](.\Real-time-2D-object-detection\include)
-  * [aaron.h](.\Real-time-2D-object-detection\include\aaron.h)
-  * [abhishek.h](.\Real-time-2D-object-detection\include\abhishek.h)
-  * [csv_util.h](.\Real-time-2D-object-detection\include\csv_util.h)
-  * [kmeans.h](.\Real-time-2D-object-detection\include\kmeans.h)
-* [src/](.\Real-time-2D-object-detection\src)
-  * [aaron.cpp](.\Real-time-2D-object-detection\src\aaron.cpp)
-  * [abhishek.cpp](.\Real-time-2D-object-detection\src\abhishek.cpp)
-  * [dnnexample.cpp](.\Real-time-2D-object-detection\src\dnnexample.cpp)
-  * [kmeans.cpp](.\Real-time-2D-object-detection\src\kmeans.cpp)
-  * [main.cpp](.\Real-time-2D-object-detection\src\main.cpp)
-  * [object_detection.cpp](.\Real-time-2D-object-detection\src\object_detection.cpp)
-* [utils/](.\Real-time-2D-object-detection\utils)
-  * [csv_util.cpp](.\Real-time-2D-object-detection\utils\csv_util.cpp)
-* [.gitignore](.\Real-time-2D-object-detection\.gitignore)
-* [CMakeLists.txt](.\Real-time-2D-object-detection\CMakeLists.txt)
-* [README.md](.\Real-time-2D-object-detection\README.md)
