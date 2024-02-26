@@ -8,6 +8,19 @@
 #### IDE: _VScode_
 #### Time Travel days: 1.
 
+## Tasks and Function Location
+
+| Task Number | Function Location|
+|----------|----------|
+| Task 1| main.cpp | 
+| Task 2| aaron.cpp | 
+| Task 3| abhishek.cpp | 
+| Task 4| abhishek.cpp | 
+| Task 5| main.cpp | 
+| Task 6| aaron.cpp | 
+| Task 9 KNN| aaron.cpp | 
+
+
 ## Table of Contents
 
 1. [Intoduction](#introduction)
