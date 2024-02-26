@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
         cv::VideoCapture *capdev;
 
         // open the video device
-        capdev = new cv::VideoCapture(1);
+        capdev = new cv::VideoCapture(0);
         if( !capdev->isOpened() ) {
                 printf("Unable to open video device\n");
                 return(-1);
@@ -37,10 +37,8 @@ int main(int argc, char *argv[]) {
                 std::cerr << "Provid the loction of database CSV File" << std::endl;
                 return 1;
         }
-        else{
-                // accessing command line arguments
-                csv_path = argv[1];  
-        }
+        // accessing command line arguments
+        csv_path = argv[1];  
         // std::vector<char *> labels;
         // std::vector<std::vector<float>> features;
         // char* csv_path_ptr = const_cast<char*>(csv_path.c_str());
