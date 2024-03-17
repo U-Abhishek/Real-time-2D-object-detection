@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
         // Feature vectors for task 6 : labels and features
         std::string csv_path;
         if (argc < 2) {
-                std::cerr << "Provid the loction of database CSV File" << std::endl;
+                std::cerr << "Provide the loction of database CSV File" << std::endl;
                 return 1;
         }
         // accessing command line arguments
