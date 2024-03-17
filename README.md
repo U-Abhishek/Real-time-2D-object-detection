@@ -13,12 +13,12 @@
 | Task Number | Function Location|
 |----------|----------|
 | Task 1| main.cpp | 
-| Task 2| aaron.cpp | 
-| Task 3| abhishek.cpp | 
-| Task 4| abhishek.cpp | 
+| Task 2| preprocess_classification.cpp | 
+| Task 3| process_featureExtract.cpp | 
+| Task 4| process_featureExtract.cpp | 
 | Task 5| main.cpp | 
-| Task 6| aaron.cpp | 
-| Task 9 KNN| aaron.cpp | 
+| Task 6| preprocess_classification.cpp | 
+| Task 9 KNN| preprocess_classification.cpp | 
 
 ## Table of Contents
 
