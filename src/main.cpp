@@ -4,10 +4,14 @@ Abhishek Uddaraju | Aaron Pan
 This file is the main file for project 3 that runs the loop for video display
 */
 #include <iostream>
-#include "../include/aaron.h"
-#include "../include/abhishek.h"
+#include "../include/preprocess_classification.h"
+#include "../include/process_featureExtract.h"
 #include "../include/csv_util.h"
 #include <cmath>
+
+using namespace std;
+using namespace cv;
+
 
 
 int main(int argc, char *argv[]) {

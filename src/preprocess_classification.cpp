@@ -1,4 +1,13 @@
-#include "../include/aaron.h"
+/*
+Aaron Pan
+18/02/2024
+This file containes the functions used for:
+Task 1: Thresholding input video
+Task 2: Processing input video (shrinking and growing)
+Task 6: Classify new images
+Task 9: KNN matching
+*/
+#include "../include/preprocess_classification.h"
 #include "../include/csv_util.h"
 
 ////////////////////////////////////// TASK 1 //////////////////////////////////////
