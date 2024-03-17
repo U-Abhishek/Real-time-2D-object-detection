@@ -7,12 +7,8 @@ Main Video Demo for this project: https://drive.google.com/file/d/1P43U9hZENwPHm
 For more videos on this project [click here.](https://drive.google.com/drive/folders/1Xy_e8o-A-tYnMe4YI2LFFJ8rMyHOSPJA?usp=sharing)
 
 #### Team Members
-
 - Aaron Pan
 - Abhishek Uddaraju
-#### Operating System Used: _Windows_
-#### IDE: _VScode_
-#### Time Travel days: 1
 
 ## Tasks and Function Location
 
