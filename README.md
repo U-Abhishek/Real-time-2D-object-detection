@@ -1,5 +1,11 @@
 # Real-time-2D-object-detection
 
+#### Video Demo
+
+Main Video Demo for this project: https://drive.google.com/file/d/1P43U9hZENwPHmO5sAYKbFtXZ-luVi7Vz/view?usp=sharing
+
+For more videos on this project [click here.](https://drive.google.com/drive/folders/1Xy_e8o-A-tYnMe4YI2LFFJ8rMyHOSPJA?usp=sharing)
+
 #### Team Members
 
 - Aaron Pan
@@ -53,7 +59,7 @@
 This project introduces methods to compare image frames within a video sequence for object recognition. We use region-based object recognition methods such as moments, percent fill, etc to compare objects. The program takes a training database of at least 5 objects of multiple points to then compare to new objects (known or unknown), if the objects are known the system will classify the object. With comparison, multiple distance metrics can be used to compare objects, such as L2 distance and KNN classification, which we will use in this project.
 
 ## Installation  
-### *** (Currently, the Repo is private Please use the .exe provided in the submission to run the project) ***
+
 ### 1. Cloning the project
 ```
 $ git clone https://github.com/U-Abhishek/Real-time-2D-object-detection.git
