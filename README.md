@@ -31,13 +31,13 @@
 * bin/
   * Debug/
 * include/
-  * aaron.h
-  * abhishek.h
+  * preprocess_classification.h
+  * process_featureExtract.h
   * csv_util.h
   * kmeans.h
 * src/
-  * aaron.cpp
-  * abhishek.cpp
+  * preprocess_classification.cpp
+  * process_featureExtract.cpp
   * dnnexample.cpp
   * kmeans.cpp
   * main.cpp
