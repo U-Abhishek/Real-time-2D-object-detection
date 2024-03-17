@@ -12,8 +12,6 @@ This file is the main file for project 3 that runs the loop for video display
 using namespace std;
 using namespace cv;
 
-
-
 int main(int argc, char *argv[]) {
         cv::VideoCapture *capdev;
 
